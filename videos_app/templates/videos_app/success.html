@@ -1,0 +1,10 @@
+{% extends "videos_app/base.html" %}
+
+{% block title %}Guardado exitoso{% endblock %}
+
+{% block content %}
+<h1>Guardado exitoso</h1>
+<p>El video se guardó correctamente.</p>
+<p><a href="{% url 'index' %}">Volver al inicio</a></p>
+<p><a href="{% url 'upload_video' %}">Subir otro video</a></p>
+{% endblock %}

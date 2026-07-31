@@ -1,0 +1,146 @@
+{% extends "videos_app/base.html" %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<div class="header-blur-layer"></div>
+<header class="site-header">
+    <a class="brand" href="{% url 'index' %}">
+        <img
+            class="brand-logo"
+            src="{% static 'images/logo.png' %}"
+            alt="Logo de Zona Táctica">
+        <span class="brand-copy">
+            <strong>Zona Táctica</strong>
+            <small>Biblioteca de análisis</small>
+        </span>
+    </a>
+
+    <nav class="header-actions" aria-label="Navegación principal">
+        {% if user.is_authenticated %}
+            <span class="welcome">Bienvenido, <strong>{{ user.nombre }}</strong></span>
+            {% if mis_videos %}
+                <a href="{% url 'index' %}">Inicio</a>
+            {% else %}
+                <a href="{% url 'mis_videos' %}">Mis Videos</a>
+            {% endif %}
+            <a href="{% url 'upload_video' %}">Subir Video</a>
+            <form class="logout-form" method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="button-link" type="submit">Cerrar Sesión</button>
+            </form>
+            {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}">Panel de administración</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'login' %}">Iniciar sesión</a>
+            <a class="nav-register" href="{% url 'register' %}">Registrarse</a>
+        {% endif %}
+    </nav>
+</header>
+</div>
+
+<section class="content-heading">
+    <div>
+        {% if mis_videos %}
+            <p class="eyebrow">Mis Videos</p>
+            <h1>Administra tus videos.</h1>
+        {% else %}
+            {% comment %} <p class="eyebrow">Biblioteca de análisis</p> {% endcomment %}
+            <h1>Explora los videos disponibles.</h1>
+        {% endif %}
+    </div>
+</section>
+
+<form class="search-form" method="get">
+    <div class="search-field">
+        <label for="creator">Buscar videos</label>
+        <input
+            type="text"
+            id="creator"
+            name="creator"
+            value="{{ creator_name }}"
+            placeholder="Buscar por título o creador">
+    </div>
+    <button type="submit">Buscar</button>
+    <a
+        class="button-secondary"
+        href="{% if mis_videos %}{% url 'mis_videos' %}{% else %}{% url 'index' %}{% endif %}">
+        Todos
+    </a>
+</form>
+
+{% if videos %}
+    <div id="view-counter-config" hidden>
+        {% csrf_token %}
+    </div>
+    <section class="video-grid">
+    {% for video in videos %}
+    <article class="video-card">
+        <div class="video-player">
+            <video
+                controls
+                preload="metadata"
+                data-view-url="{% url 'registrar_vista_video' video.id %}"
+                data-view-target="view-count-{{ video.id }}">
+                <source src="{{ video.archivo.url }}" type="video/{{ video.extension|lower }}">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+        </div>
+
+        <div class="video-card-heading">
+            <h2>{{ video.titulo }}</h2>
+            <button
+                    class="share-button"
+                    type="button"
+                    data-share-url="{{ video.archivo.url }}"
+                    data-share-title="{{ video.titulo }}"
+                    aria-label="Compartir {{ video.titulo }}">
+                    <i class="bx bx-share-alt" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <div class="video-metadata">
+            <p class="video-creator">
+                <span class="sr-only">Creador:</span>
+                {{ video.creator.nickname }}
+            </p>
+            <div class="video-stats-row">
+                <p class="video-stats">
+                    <span
+                        id="view-count-{{ video.id }}"
+                        class="view-count">
+                        {% if video.vistas == 1 %}
+                            1 reproducción
+                        {% else %}
+                            {{ video.vistas }} reproducciones
+                        {% endif %}
+                    </span>
+                    <span aria-hidden="true">•</span>
+                    <span class="sr-only">Tamaño:</span>
+                    {{ video.tamanio|floatformat:2 }} MB
+                    <span aria-hidden="true">•</span>
+                    <span class="video-age">{{ video.fecha_subida|antiguedad }}</span>
+                </p>
+            </div>
+        </div>
+        {% if mis_videos %}
+            <div class="video-actions">
+                <a
+                    class="button-primary"
+                    href="{% url 'editar_video' video.id %}">Editar</a>
+            </div>
+        {% endif %}
+    </article>
+    {% endfor %}
+    </section>
+{% else %}
+    <div class="empty-state">
+        <p>Aún no hay videos publicados. ¡Sé el primero en subir uno!.</p>
+    </div>
+{% endif %}
+
+<script src="{% static 'js/video-views.js' %}" defer></script>
+{% endblock %}

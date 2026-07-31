@@ -1,0 +1,20 @@
+{% extends "videos_app/base.html" %}
+
+{% block title %}{% if editando %}Editar video{% else %}Subir video{% endif %}{% endblock %}
+
+{% block content %}
+<h1>{% if editando %}Editar video{% else %}Subir video{% endif %}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        {{ field.label_tag }}
+        {{ field }}
+        {% for error in field.errors %}
+            <div class="error">{{ error }}</div>
+        {% endfor %}
+    {% endfor %}
+    <p>El archivo debe ser un video compatible y no superar 3 MB.</p>
+    <button type="submit">{% if editando %}Guardar cambios{% else %}Guardar{% endif %}</button>
+</form>
+{% endblock %}
