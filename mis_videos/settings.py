@@ -25,7 +25,12 @@ SECRET_KEY = "django-insecure-*38%hp_wl1zm&)x@#2ox@xkn759mne1(0xaxk+lj$vdrkd879i
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "zonatactica.dexforge.app",
+    "157.245.141.149",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
