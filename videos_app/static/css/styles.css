@@ -85,6 +85,10 @@ a:hover {
     font-size: 0.92rem;
 }
 
+.menu-toggle {
+    display: none;
+}
+
 .welcome {
     color: var(--text-muted);
     font-weight: 400;
@@ -410,6 +414,96 @@ button:hover,
 
     .video-card {
         padding: 16px;
+    }
+}
+
+@media (max-width: 767px) {
+    .site-header {
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .menu-toggle {
+        display: inline-flex;
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        min-height: 42px;
+        align-items: center;
+        justify-content: center;
+        padding: 9px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .menu-toggle:hover,
+    .menu-toggle:focus-visible {
+        border-color: var(--primary);
+        background: var(--surface-muted);
+        color: var(--text);
+    }
+
+    .menu-toggle:focus-visible {
+        outline: 2px solid rgba(17, 169, 204, 0.25);
+        outline-offset: 2px;
+    }
+
+    .menu-toggle-line {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 2px;
+        background: currentColor;
+        transition: transform 160ms ease, opacity 160ms ease;
+    }
+
+    .menu-toggle[aria-expanded="true"] .menu-toggle-line:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+
+    .menu-toggle[aria-expanded="true"] .menu-toggle-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle[aria-expanded="true"] .menu-toggle-line:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .header-actions {
+        display: none;
+        width: 100%;
+        align-items: stretch;
+        padding-top: 12px;
+        border-top: 1px solid var(--border);
+        flex-basis: 100%;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .header-actions.is-open {
+        display: flex;
+    }
+
+    .header-actions a,
+    .header-actions .button-link,
+    .header-actions .welcome {
+        width: 100%;
+        padding: 9px 4px;
+        text-align: left;
+    }
+
+    .header-actions .button-link {
+        justify-content: flex-start;
+    }
+
+    .header-actions .nav-register {
+        padding: 9px 13px;
+        text-align: center;
     }
 }
 

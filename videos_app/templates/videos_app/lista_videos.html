@@ -18,7 +18,18 @@
         </span>
     </a>
 
-    <nav class="header-actions" aria-label="Navegación principal">
+    <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+        aria-label="Abrir menú de navegación">
+        <span class="menu-toggle-line" aria-hidden="true"></span>
+        <span class="menu-toggle-line" aria-hidden="true"></span>
+        <span class="menu-toggle-line" aria-hidden="true"></span>
+    </button>
+
+    <nav id="primary-navigation" class="header-actions" aria-label="Navegación principal">
         {% if user.is_authenticated %}
             <span class="welcome">Bienvenido, <strong>{{ user.nombre }}</strong></span>
             {% if mis_videos %}
@@ -142,5 +153,6 @@
     </div>
 {% endif %}
 
+<script src="{% static 'js/mobile-menu.js' %}" defer></script>
 <script src="{% static 'js/video-views.js' %}" defer></script>
 {% endblock %}
